@@ -11,7 +11,7 @@ public class Customer extends User{
     }
     @Override
     public void performAction(){
-
+        Ticket ticket = getTicketPool().removeTicket();
     }
 }
 

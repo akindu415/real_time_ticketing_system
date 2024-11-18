@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -15,8 +16,17 @@ public class Vendor extends User{
     }
 
     @Override
-    public void performAction(){
+    public void performAction() {
+        List<Ticket> newTickets = createTickets(ticketsPerRelease);
+        getTicketPool().addTickets(newTickets);
+    }
 
+    private List<Ticket> createTickets(int count) {
+        List<Ticket> tickets = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            tickets.add(new Ticket());
+        }
+        return tickets;
     }
 
 
