@@ -10,31 +10,40 @@ public class TicketApp {
         config.loadFromInput(scanner);
         System.out.println("System configuration completed");
 
-//        assigning value to tocketpool
+//        assigning value to ticketpool
         int maxTicketCapacity = config.getMaxTicketCapacity();
         TicketPool ticketPool = new TicketPool(maxTicketCapacity);
         List<Thread> threads = new ArrayList<>();
 
         System.out.println("Ticketpool created with max capacity :"+maxTicketCapacity);
 
-//        creating vendor
+//        creating vendor threads
         for (int i = 0; i< config.getNumberOfVendors();i++){
-            System.out.println("Enter name of the vendor :");
-            String vname = scanner.next();
-            Vendor vendor = new Vendor(i,vname,ticketPool, config.getTicketReleaseRate(), config.getTicketsPerRelease());
+
+            Vendor vendor = new Vendor(i,ticketPool,config.getTicketReleaseRate(),config.getTicketsPerRelease());
             Thread vendorThread = new Thread(vendor,"Vendor-"+ i);
             threads.add(vendorThread);
             vendorThread.start();
         }
 
-//        creating customer
+//        creating customer threads
         for (int i =0; i<config.getNumberOfCustomers();i++){
-            System.out.println("Enter name of the customer :");
-            String cname = scanner.next();
-            Customer customer = new Customer(i,cname, config.getCustomerRetirevalRate(),ticketPool,);
+            Customer customer = new Customer(i,ticketPool, config.getCustomerRetirevalRate());
             Thread customerThread = new Thread(customer, "Customer-" + i);
             threads.add(customerThread);
             customerThread.start();
+        }
+
+//        stopping all threads for clear output
+        for(Thread thread : threads){
+            thread.interrupt();
+
+            //        letting the program run for 10 seconds for clear output
+            try{
+                Thread.sleep(10000);
+            }catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+            }
         }
 
     }

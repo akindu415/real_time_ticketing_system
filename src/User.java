@@ -1,13 +1,11 @@
 public abstract class User implements Runnable {
     private int userId;
-    private String name;
     private TicketPool ticketPool;
     private int actionInterval;
 
 //    constructors
-    public User(int userId,String name,TicketPool ticketPool, int actionInterval){
+    public User(int userId,TicketPool ticketPool, int actionInterval){
         this.userId = userId;
-        this.name = name;
         this.ticketPool = ticketPool;
         this.actionInterval = actionInterval;
     }
@@ -15,10 +13,6 @@ public abstract class User implements Runnable {
 //    implementing getters for user
     public int getUserId(){
         return userId;
-    }
-
-    public String getName(){
-        return name;
     }
 
     public TicketPool getTicketPool(){
@@ -34,15 +28,16 @@ public abstract class User implements Runnable {
     @Override
     public void run(){
 //        the loop continues until the thread is interrupted
-        while(!Thread.currentThread().isInterrupted()){
+        while(!Thread.currentThread().isInterrupted()) {
             performAction();
-        }
-        try{
+            try {
 //            pause for the specified interval
-            Thread.sleep(actionInterval);
-        } catch (InterruptedException e) {
+                Thread.sleep(actionInterval);
+            } catch (InterruptedException e) {
 //            restore the interrupted status and exit the loop
-            Thread.currentThread().interrupt();
+                Thread.currentThread().interrupt();
+                break;
+            }
         }
     }
 
