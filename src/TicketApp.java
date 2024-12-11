@@ -12,7 +12,7 @@ public class TicketApp {
 
 //        assigning value to ticketpool
         int maxTicketCapacity = config.getMaxTicketCapacity();
-        TicketPool ticketPool = new TicketPool(maxTicketCapacity);
+        TicketPool ticketPool = new TicketPool(maxTicketCapacity,config.getTotalTickets());
         List<Thread> threads = new ArrayList<>();
 
         System.out.println("Ticketpool created with max capacity :"+maxTicketCapacity);
@@ -34,17 +34,23 @@ public class TicketApp {
             customerThread.start();
         }
 
-//        stopping all threads for clear output
-        for(Thread thread : threads){
-            thread.interrupt();
-
-            //        letting the program run for 10 seconds for clear output
-            try{
-                Thread.sleep(10000);
-            }catch (InterruptedException e){
+        //    Monitor remaining tickets and stop threads
+        while (ticketPool.getRemainingTickets() > 0) {
+            try {
+                Thread.sleep(1000); // Check every second
+            } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                break;
             }
         }
+
+        // Stop all threads
+        for (Thread thread : threads) {
+            thread.interrupt();
+        }
+
+        System.out.println("All tickets processed. Shutting down.");
+
 
     }
 }

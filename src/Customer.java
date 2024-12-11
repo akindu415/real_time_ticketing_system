@@ -10,6 +10,11 @@ public class Customer extends User{
     }
     @Override
     public void performAction(){
+        if (getTicketPool().getRemainingTickets() <= 0) {
+            Thread.currentThread().interrupt();
+            return;
+        }
+
         Ticket ticket = getTicketPool().removeTicket();
         if (ticket != null){
             System.out.println("Ticket "+ ticket.getTicketId() +" is retrieved by customer "+ getUserId());

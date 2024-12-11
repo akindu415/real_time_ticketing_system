@@ -17,6 +17,11 @@ public class Vendor extends User{
 
     @Override
     public void performAction() {
+        if (getTicketPool().getRemainingTickets() <= 0) {
+            Thread.currentThread().interrupt();
+            return;
+        }
+
         List<Ticket> newTickets = createTickets(ticketsPerRelease);
         getTicketPool().addTickets(newTickets);
         System.out.println("Vendor  "+ getUserId() + " released " + ticketsPerRelease + " tickets");

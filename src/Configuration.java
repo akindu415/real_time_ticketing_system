@@ -10,6 +10,7 @@ public class Configuration {
     private int numberOfCustomers;
 
     public  void loadFromInput(Scanner scanner){
+
         System.out.println("Enter total number of tickets: ");
         totalTickets = scanner.nextInt();
 
@@ -31,6 +32,7 @@ public class Configuration {
         System.out.println("Enter number of Customers");
         numberOfCustomers = scanner.nextInt();
     }
+
 
     public int getMaxTicketCapacity() {
         return maxTicketCapacity;
@@ -55,4 +57,6 @@ public class Configuration {
     public int getCustomerRetirevalRate() {
         return customerRetirevalRate;
     }
+
+    public int getTotalTickets() {return totalTickets;}
 }
